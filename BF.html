@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Sayang ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff6a88, #ff99ac);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.container {
+    background: white;
+    width: 360px;
+    height: 540px;
+    border-radius: 22px;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: fadeIn 1.2s ease;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide {
+    display: none;
+    text-align: center;
+}
+
+.slide.active {
+    display: block;
+}
+
+h1 {
+    color: #ff4d6d;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #555;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.4;
+}
+
+/* indikator */
+.dots {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    background: #ffc1cc;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.dot.active {
+    background: #ff4d6d;
+}
+
+/* hati */
+.heart {
+    position: absolute;
+    color: #ff4d6d;
+    animation: float 6s linear infinite;
+    opacity: 0.9;
+    z-index: 1;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-800px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="lagu.mp3" loop></audio>
+
+<div class="container">
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+        <h1>Happy Birthday, Sayang 🎂</h1>
+        <p>
+            Hari ini aku cuma mau bilang sesuatu  
+            yang mungkin sederhana,  
+            tapi datang dari hati yang paling tulus 🤍  
+            <br><br>
+            Terima kasih sudah lahir,  
+            dan tanpa sadar jadi alasan  
+            seseorang belajar mencintai dengan tenang.
+        </p>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <h1>🤍</h1>
+        <p>
+            Terima kasih ya, sayang…  
+            karena sudah mau menemani perempuan sepertiku.  
+            Dengan segala kurangnya,  
+            dengan ribetnya,  
+            dan dengan versi diriku yang belum selalu baik.
+        </p>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+        <h1>🌷</h1>
+        <p>
+            Aku sadar,  
+            aku belum selalu bisa jadi seperti yang kamu mau.  
+            Kadang aku bikin kamu lelah,  
+            kadang aku terlalu tenggelam  
+            dengan pikiranku sendiri.
+            <br><br>
+            Untuk semua itu,  
+            aku minta maaf… pelan-pelan 🤍
+        </p>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+        <h1>✨</h1>
+        <p>
+            Tapi satu hal yang perlu kamu tau,  
+            perasaanku ke kamu nggak pernah main-main.  
+            Aku bersyukur masih bisa berjalan sejauh ini,  
+            belajar, jatuh, dan bangkit  
+            bareng kamu.
+        </p>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <h1>💌</h1>
+        <p>
+            Di usia yang baru ini,  
+            semoga kamu selalu dikelilingi hal-hal baik.  
+            Semoga lelahmu cepat diganti bahagia,  
+            dan langkahmu selalu terasa ringan.
+            <br><br>
+            Aku sayang kamu.  
+            Selalu 🤍
+        </p>
+    </div>
+
+    <!-- KONTROL -->
+    <div>
+        <div class="controls">
+            <button onclick="prevSlide()" id="prevBtn">Kembali</button>
+            <button onclick="nextSlide()" id="nextBtn">Lanjut</button>
+        </div>
+
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
+const music = document.getElementById("music");
+let musicStarted = false;
+
+function showSlide(index) {
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+
+    document.getElementById("prevBtn").disabled = index === 0;
+    document.getElementById("nextBtn").innerText =
+        index === slides.length - 1 ? "Selesai 🤍" : "Lanjut";
+}
+
+function nextSlide() {
+    if (!musicStarted) {
+        music.play().catch(() => {});
+        musicStarted = true;
+    }
+
+    if (current < slides.length - 1) {
+        current++;
+        showSlide(current);
+        spawnHearts(6);
+    } else {
+        finalHearts();
+    }
+}
+
+function prevSlide() {
+    if (current > 0) {
+        current--;
+        showSlide(current);
+    }
+}
+
+function spawnHearts(count) {
+    for (let i = 0; i < count; i++) {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.bottom = "-20px";
+        heart.style.fontSize = (14 + Math.random() * 18) + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 6000);
+    }
+}
+
+function finalHearts() {
+    for (let i = 0; i < 60; i++) {
+        spawnHearts(1);
+    }
+}
+
+showSlide(current);
+</script>
+
+</body>
+</html>
